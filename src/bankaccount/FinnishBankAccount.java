@@ -45,8 +45,8 @@ public class FinnishBankAccount {
     
     /* Checks if an array contains a certain integer value*/
     private boolean contains(int[] intArray, int value){
-        for (int i : intArray){
-            if (value == i){
+        for (int i = 0; i<intArray.length; i++){
+            if (intArray[i] == value){
                 return true;
             }
         }
