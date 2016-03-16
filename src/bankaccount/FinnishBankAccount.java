@@ -5,8 +5,6 @@ joel.salminen@gmail.com
 */
 package bankaccount;
 
-import java.util.ArrayList;
-
 public class FinnishBankAccount {
     String accountNumber;
     int[] groupA = {1,2,31,33,34,36,37,38,39};
@@ -62,13 +60,11 @@ public class FinnishBankAccount {
     
     /* Calculates the hash value of the bank account number */
     private void calculateHash(){
-        char [] charArray = new char [50];
-        ArrayList <Integer> array = new ArrayList();
-        int [] digitArray = new int [50];
+        char [] charArray = new char [13];
+        int [] digitArray = new int [13];
         int hashValue = 0;
         System.out.println(accountNumber);
         //array.add(Integer.parseInt(accountNumber));
-        array = splitIntegerIntoDigits(array);
         String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
         charArray = number.toCharArray(); /* splitting the string into an array of characters*/
         
@@ -81,44 +77,23 @@ public class FinnishBankAccount {
         for (int i = 0; i<digitArray.length; i=i+2){
             digitArray[i] = digitArray[i] * 2;
         }
-        
-        for (int i = 0; i<digitArray.length; i++){
-            System.out.print(array.get(i));
-            
-        }
-        
-        //digitArray = splitIntegerIntoDigits(digitArray);
-        
+
         /* lasketaan jokainen merkki yhteen*/
         for (int i = 0; i<digitArray.length; i++){
-            System.out.print(digitArray[i] + " ");
+            while (digitArray[i] >= 10){
+                hashValue = hashValue + digitArray[i] % 10;
+                digitArray[i] = digitArray[i] / 10;
+            }
             hashValue = hashValue + digitArray[i];
         }
         System.out.println(hashValue);
-        
-        
     }
-    
-    
-    private ArrayList<Integer> splitIntegerIntoDigits(ArrayList <Integer> array){
-        int counter = 0;
-        while (counter < array.size()){
-            while (array.get(counter)>=10){
-                /*jakohässäkkä*/
-                    array.add(array.get(counter)%10);
-                    array.set(counter, array.get(counter/10));
-                }
-            counter ++;
-        }
-        return array;
-    }
-    
     
     /* Checks if the input string is an integer */
-    private boolean isInteger(String s){
+    private boolean isInteger(String n){
         boolean validInteger = false;
         try{
-            Integer.parseInt(s);
+            Integer.parseInt(n);
             /* throws NumberFormatException, if n contains something else than digits*/
             validInteger = true;
         }
