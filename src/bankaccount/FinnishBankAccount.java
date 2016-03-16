@@ -28,10 +28,14 @@ public class FinnishBankAccount {
         }
         
         /* Transforming the bank account number into machine code: */
+        /* se että miten tämä tapahtuu rippuu siitä mikä numero on alussa
+        siksi jaetaan ryhmiin a ja b*/
+        
         
         /* tarkistaa mihin ryhmään tää numero tungetaan*/
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
                 || contains(groupA, Integer.parseInt(accountNumber.substring(0,2)))){
+            /* If the */
             System.out.println("ryhmä A");
         }
         else if (contains(groupB, Integer.parseInt(accountNumber.substring(0,1)))){
@@ -41,7 +45,18 @@ public class FinnishBankAccount {
             System.out.println("virhe: alku");
         }
 
+        /* Removing dash-character*/
+        accountNumber = removeDash(accountNumber);
     }
+    
+    private String removeDash(String input){
+        /* Removes the 7th letter of the input*/
+        String temp = input.substring(7);
+        input = input.substring(0,6);
+        input = input + temp;
+        return input;
+    }
+    
     
     /* Checks if an array contains a certain integer value*/
     private boolean contains(int[] intArray, int value){
