@@ -55,15 +55,40 @@ public class FinnishBankAccount {
         else{
             System.out.println("virhe: alku");
         }
-        
+        calculateHash();
     }
     
+    /* Calculates the hash value of the bank account number */
+    private void calculateHash(){
+        char [] charArray = new char [13];
+        int [] digitArray = new int [13];
+        int hashValue = 0;
+        
+        String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
+        charArray = number.toCharArray(); /* splitting the string into an array of characters*/
+        
+        /* kopioidaan kirjaintaulukko int taulukkoon */
+        for (int i = 0; i<charArray.length; i++){
+            digitArray[i] = Character.getNumericValue(charArray[i]);
+        }
+        
+        /* kerrotaan joka toinen kahdella*/
+        for (int i = 0; i<digitArray.length; i=i+2){
+            digitArray[i] = digitArray[i] * 2;
+        }
+
+        /* lasketaan jokainen merkki yhteen*/
+        for (int i = 0; i<digitArray.length; i++){
+            System.out.print(digitArray[i] + " ");
+            hashValue = hashValue + digitArray[i];
+        }
+        System.out.println(hashValue);
+    }
     
     /* Checks if the input string is an integer */
     private boolean isInteger(String n){
         boolean validInteger = false;
         try{
-            
             Integer.parseInt(n);
             /* throws NumberFormatException, if n contains something else than digits*/
             validInteger = true;
