@@ -27,12 +27,20 @@ public class FinnishBankAccount {
             System.out.println("Virhe: väliviiva");
         }
         
+        /* Removing dash-character*/
+        removeDash();
+        
+        /* Checking if the given bank account number contains something
+        else than digits */
+        if (!isInteger(accountNumber)){
+            System.out.println("Virhe: muita kuin numeroita");
+        }
+        
         /* Transforming the bank account number into machine code: */
         /* se että miten tämä tapahtuu rippuu siitä mikä numero on alussa
         siksi jaetaan ryhmiin a ja b*/
         
-        /* Removing dash-character*/
-        removeDash();
+
 
         /* Comparing the first two digits to the values in arrays groupA and groupB*/
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
@@ -47,8 +55,26 @@ public class FinnishBankAccount {
         else{
             System.out.println("virhe: alku");
         }
-
+        
     }
+    
+    
+    /* Checks if the input string is an integer */
+    private boolean isInteger(String n){
+        boolean validInteger = false;
+        try{
+            
+            Integer.parseInt(n);
+            /* throws NumberFormatException, if n contains something else than digits*/
+            validInteger = true;
+        }
+        catch (NumberFormatException ex){
+            System.out.println("aaa");
+        }
+        
+        return validInteger;
+    }
+    
     
     /* Transforms the bank account number into machine code*/
     private void toMachineCode(String group){
