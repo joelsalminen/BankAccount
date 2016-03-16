@@ -5,6 +5,8 @@ joel.salminen@gmail.com
 */
 package bankaccount;
 
+import java.util.ArrayList;
+
 public class FinnishBankAccount {
     String accountNumber;
     int[] groupA = {1,2,31,33,34,36,37,38,39};
@@ -60,8 +62,9 @@ public class FinnishBankAccount {
     
     /* Calculates the hash value of the bank account number */
     private void calculateHash(){
-        char [] charArray = new char [13];
-        int [] digitArray = new int [13];
+        char [] charArray = new char [50];
+        ArrayList <Integer> array = new ArrayList();
+        int [] digitArray = new int [50];
         int hashValue = 0;
         
         String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
@@ -76,20 +79,43 @@ public class FinnishBankAccount {
         for (int i = 0; i<digitArray.length; i=i+2){
             digitArray[i] = digitArray[i] * 2;
         }
-
+        
+        for (int i = 0; i<digitArray.length; i++){
+            System.out.print(digitArray[i]);
+        }
+        
+        digitArray = splitInt(digitArray);
+        
         /* lasketaan jokainen merkki yhteen*/
         for (int i = 0; i<digitArray.length; i++){
             System.out.print(digitArray[i] + " ");
             hashValue = hashValue + digitArray[i];
         }
         System.out.println(hashValue);
+        
+        
     }
     
+    
+    private int[] splitIntegerIntoDigits(int[] array){
+        int counter = 0;
+        while (counter < array.length){
+            while (array[counter]>=10){
+                /*jakohässäkkä*/
+                    array[array.length] = array[counter] % 10;
+                    array[counter] = array[counter] / 10;
+                }
+            counter ++;
+        }
+        return array;
+    }
+    
+    
     /* Checks if the input string is an integer */
-    private boolean isInteger(String n){
+    private boolean isInteger(String s){
         boolean validInteger = false;
         try{
-            Integer.parseInt(n);
+            Integer.parseInt(s);
             /* throws NumberFormatException, if n contains something else than digits*/
             validInteger = true;
         }
