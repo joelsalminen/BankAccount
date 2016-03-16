@@ -38,10 +38,11 @@ public class FinnishBankAccount {
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
                 || contains(groupA, Integer.parseInt(accountNumber.substring(0,2)))){
             System.out.println("ryhmä A");
-            
+            toMachineCode("A");
         }
         else if (contains(groupB, Integer.parseInt(accountNumber.substring(0,1)))){
             System.out.println("ryhmä B");
+            toMachineCode("B");
         }
         else{
             System.out.println("virhe: alku");
@@ -49,8 +50,27 @@ public class FinnishBankAccount {
 
     }
     
-    
-    private void toMachineCode(){}
+    /* Transforms the bank account number into machine code*/
+    private void toMachineCode(String group){
+        String temp1 = "";
+        String temp2 = "";
+        
+        switch (group) {
+            case "A":
+                temp1 = accountNumber.substring(0,6);
+                temp2 = accountNumber.substring(6);
+                break;
+            case "B":
+                temp1 = accountNumber.substring(0,7);
+                temp2 = accountNumber.substring(7);
+                break;
+        }
+        while (temp1.length()+temp2.length() < 14){
+            temp1 = temp1 + "0";
+        }
+        accountNumber = temp1 + temp2;
+        System.out.println(accountNumber + " " + accountNumber.length());
+    }
     
     
     private void removeDash(){
