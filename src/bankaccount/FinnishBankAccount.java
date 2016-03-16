@@ -17,10 +17,13 @@ public class FinnishBankAccount {
         /* Checks if the given bank account number is valid */
         
         /* check if the input lenght is between 9-15*/
+        if (sAccountNumber.length()<9 || sAccountNumber.length() > 15){
+            System.out.println("Virhe: pituus");
+        }
         
-        /* checks if the 7th character of the input is "-"? */
+        /* checks if the 7th character of the input is a dash */
         if (sAccountNumber.charAt(6) != '-'){
-            System.out.println("Virhe");
+            System.out.println("Virhe: väliviiva");
         }
     }
 }
