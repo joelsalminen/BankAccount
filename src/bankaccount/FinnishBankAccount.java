@@ -31,12 +31,14 @@ public class FinnishBankAccount {
         /* se että miten tämä tapahtuu rippuu siitä mikä numero on alussa
         siksi jaetaan ryhmiin a ja b*/
         
-        
-        /* tarkistaa mihin ryhmään tää numero tungetaan*/
+        /* Removing dash-character*/
+        removeDash();
+
+        /* Comparing the first two digits to the values in arrays groupA and groupB*/
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
                 || contains(groupA, Integer.parseInt(accountNumber.substring(0,2)))){
-            /* If the */
             System.out.println("ryhmä A");
+            
         }
         else if (contains(groupB, Integer.parseInt(accountNumber.substring(0,1)))){
             System.out.println("ryhmä B");
@@ -45,16 +47,15 @@ public class FinnishBankAccount {
             System.out.println("virhe: alku");
         }
 
-        /* Removing dash-character*/
-        accountNumber = removeDash(accountNumber);
     }
     
-    private String removeDash(String input){
-        /* Removes the 7th letter of the input*/
-        String temp = input.substring(7);
-        input = input.substring(0,6);
-        input = input + temp;
-        return input;
+    
+    private void toMachineCode(){}
+    
+    
+    private void removeDash(){
+        /* Removes the 7th letter of the parameter string*/
+        accountNumber = accountNumber.substring(0,6) + accountNumber.substring(7);
     }
     
     
