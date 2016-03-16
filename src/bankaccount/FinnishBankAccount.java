@@ -66,7 +66,9 @@ public class FinnishBankAccount {
         ArrayList <Integer> array = new ArrayList();
         int [] digitArray = new int [50];
         int hashValue = 0;
-        
+        System.out.println(accountNumber);
+        //array.add(Integer.parseInt(accountNumber));
+        array = splitIntegerIntoDigits(array);
         String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
         charArray = number.toCharArray(); /* splitting the string into an array of characters*/
         
@@ -81,10 +83,11 @@ public class FinnishBankAccount {
         }
         
         for (int i = 0; i<digitArray.length; i++){
-            System.out.print(digitArray[i]);
+            System.out.print(array.get(i));
+            
         }
         
-        digitArray = splitInt(digitArray);
+        //digitArray = splitIntegerIntoDigits(digitArray);
         
         /* lasketaan jokainen merkki yhteen*/
         for (int i = 0; i<digitArray.length; i++){
@@ -97,13 +100,13 @@ public class FinnishBankAccount {
     }
     
     
-    private int[] splitIntegerIntoDigits(int[] array){
+    private ArrayList<Integer> splitIntegerIntoDigits(ArrayList <Integer> array){
         int counter = 0;
-        while (counter < array.length){
-            while (array[counter]>=10){
+        while (counter < array.size()){
+            while (array.get(counter)>=10){
                 /*jakohässäkkä*/
-                    array[array.length] = array[counter] % 10;
-                    array[counter] = array[counter] / 10;
+                    array.add(array.get(counter)%10);
+                    array.set(counter, array.get(counter/10));
                 }
             counter ++;
         }
