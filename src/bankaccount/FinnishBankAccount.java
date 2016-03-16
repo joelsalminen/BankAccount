@@ -62,7 +62,7 @@ public class FinnishBankAccount {
     private void calculateHash(){
         char [] charArray = new char [13];
         int [] digitArray = new int [13];
-        int hashValue = 0;
+        int sumOfDigits = 0;
         System.out.println(accountNumber);
         //array.add(Integer.parseInt(accountNumber));
         String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
@@ -79,15 +79,26 @@ public class FinnishBankAccount {
         }
 
         /* lasketaan jokainen merkki yhteen*/
-        for (int i = 0; i<digitArray.length; i++){
-            while (digitArray[i] >= 10){
-                hashValue = hashValue + digitArray[i] % 10;
-                digitArray[i] = digitArray[i] / 10;
-            }
-            hashValue = hashValue + digitArray[i];
-        }
-        System.out.println(hashValue);
+        sumOfDigits = calculateSumOfDigits(digitArray);
+        
+        
+        System.out.println(sumOfDigits);
     }
+    
+    /* Calculates the sum of all digits in an array
+    For example [1, 2, 10] equals 1+2+1+0 = 4 */
+    private int calculateSumOfDigits(int [] array){
+        int sum = 0;
+        for (int i = 0; i<array.length; i++){
+            while (array[i] >= 10){
+                sum = sum + array[i] % 10;
+                array[i] = array[i] / 10;
+            }
+            sum = sum + array[i];
+        }
+        return sum;
+    }
+    
     
     /* Checks if the input string is an integer */
     private boolean isInteger(String n){
