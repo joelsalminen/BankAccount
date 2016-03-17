@@ -26,6 +26,7 @@ public class FinnishBankAccount {
         accountNumber = aNumber;
         
         if (checkValidity()){
+            /* Assigning bank name to the account */
             for (int i=0;i<bankID.length;i++){
                 if (Integer.parseInt(accountNumber.substring(0, 1)) == bankID[i] || 
                     Integer.parseInt(accountNumber.substring(0, 2)) == bankID[i] ){
@@ -61,13 +62,13 @@ public class FinnishBankAccount {
         
         /* Checking if the input lenght is between 9-15*/
         if (accountNumber.length()<9 || accountNumber.length() > 15){
-            System.out.println("Syötetty tilinumero ei kelpaa.");
+            System.out.println("Syötetty tilinumero ei kelpaa: väärä pituus.");
             return false;
         }
         
         /* Checking if the 7th character of the input is a dash */
         if (accountNumber.charAt(6) != '-'){
-            System.out.println("Syötetty tilinumero ei kelpaa.");
+            System.out.println("Syötetty tilinumero ei kelpaa: väliviiva puuttuu/väärässä paikassa.");
             return false;
         }
         
@@ -77,7 +78,7 @@ public class FinnishBankAccount {
         /* Checking if the given bank account number contains something
         other than digits */
         if (!isLong(accountNumber)){
-            System.out.println("Syötetty tilinumero ei kelpaa.");
+            System.out.println("Syötetty tilinumero ei kelpaa: tilinumero ei saa sisältää kirjaimia tai erikoismerkkejä.");
             return false;
         }
         
@@ -94,14 +95,14 @@ public class FinnishBankAccount {
         }
         else{
             /* Illegal first two digits*/
-            System.out.println("Syötetty tilinumero ei kelpaa.");
+            System.out.println("Syötetty tilinumero ei kelpaa: tilinumeron tunnus virheellinen.");
             return false;
         }
 
         /* Checking if the last digit of the bank account number matches the 
         calculated hash value */
         if (calculateHash() != Integer.parseInt(longFormat.substring(13, 14))){
-            System.out.println("Syötetty tilinumero ei kelpaa.");
+            System.out.println("Syötetty tilinumero ei kelpaa: tarkistusluku ei täsmää");
             return false;
         }
         return true;
