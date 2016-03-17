@@ -55,16 +55,19 @@ public class FinnishBankAccount {
         else{
             System.out.println("virhe: alku");
         }
-        calculateHash();
+
+        if (calculateHash() != Integer.parseInt(accountNumber.substring(13, 14))){
+            System.out.println("Virhe: hash");
+        }
     }
     
     /* Calculates the hash value of the bank account number */
-    private void calculateHash(){
-        char [] charArray = new char [13];
+    private int calculateHash(){
+        char [] charArray;
         int [] digitArray = new int [13];
         int sumOfDigits = 0;
-        System.out.println(accountNumber);
-        //array.add(Integer.parseInt(accountNumber));
+        int roundedUpSum;
+
         String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
         charArray = number.toCharArray(); /* splitting the string into an array of characters*/
         
@@ -80,10 +83,18 @@ public class FinnishBankAccount {
 
         /* lasketaan jokainen merkki yhteen*/
         sumOfDigits = calculateSumOfDigits(digitArray);
-        
-        
-        System.out.println(sumOfDigits);
+        roundedUpSum = roundUpwards(sumOfDigits);
+        return (roundedUpSum - sumOfDigits);
     }
+    
+    /* rounds the input integer  up towards the next number that can be divided by 10 */
+    private int roundUpwards(int n){
+        if (n % 10 == 0){
+            return n;
+        }
+        return (n - (n % 10) + 10);
+    }
+    
     
     /* Calculates the sum of all digits in an array
     For example [1, 2, 10] equals 1+2+1+0 = 4 */
@@ -109,7 +120,6 @@ public class FinnishBankAccount {
             validInteger = true;
         }
         catch (NumberFormatException ex){
-            System.out.println("aaa");
         }
         
         return validInteger;
@@ -135,7 +145,6 @@ public class FinnishBankAccount {
             temp1 = temp1 + "0";
         }
         accountNumber = temp1 + temp2;
-        System.out.println(accountNumber + " " + accountNumber.length());
     }
     
     
