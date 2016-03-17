@@ -17,10 +17,23 @@ public class FinnishBankAccount {
     private final int[] groupA = {1,2,31,33,34,36,37,38,39};
     private final int[] groupB = {4,5,6,8};
     
+    private final int[] bankID = {1,2,31,33,34,36,37,38,39,4,5,6,8};
+    private final String[] bankNames = {"Nordea","SHB","SEB","Danske Bank","Tapiola",
+        "DnB NOR","Swedbank","S-Pankki","Sp/Pop/Aktia","OP/OKO/Okopankki","ÅAB","Sampo"};
     
+    /* Constructor, requires a 9-15 digit long bank account number as a parameter*/
     public FinnishBankAccount(String aNumber){
         accountNumber = aNumber;
         checkValidity();
+        
+        for (int i=0;i<bankID.length;i++){
+            if (Integer.parseInt(accountNumber.substring(0, 1)) == bankID[i] || 
+                   Integer.parseInt(accountNumber.substring(0, 2)) == bankID[i] ){
+                bankName = bankNames[i];
+                break;
+            }
+        }
+
     }
     
     
@@ -33,6 +46,12 @@ public class FinnishBankAccount {
     /* Returns the long format of the bank account number */
     public String getLongFormat(){
         return longFormat;
+    }
+    
+    
+    /* Returns the name of the bank */
+    public String getBankName(){
+        return bankName;
     }
     
     
@@ -87,7 +106,6 @@ public class FinnishBankAccount {
         char [] charArray;
         int [] digitArray = new int [13];
         int sumOfDigits = 0;
-        int roundedUpSum;
 
         String number = longFormat.substring(0, longFormat.length()-1); /* bank account number minus the last digit*/
         charArray = number.toCharArray(); /* splitting the string into an array of characters */
