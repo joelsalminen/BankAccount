@@ -7,13 +7,14 @@ package bankaccount;
 
 public class FinnishBankAccount {
     private String accountNumber;
-    private int[] groupA = {1,2,31,33,34,36,37,38,39};
-    private int[] groupB = {4,5,6,8};
+    private final int[] groupA = {1,2,31,33,34,36,37,38,39};
+    private final int[] groupB = {4,5,6,8};
     
     public FinnishBankAccount(String aNumber){
         accountNumber = aNumber;
         checkValidity();
     }
+    
     
     public String getAccountNumber(){
         return accountNumber;
@@ -38,7 +39,7 @@ public class FinnishBankAccount {
         
         /* Checking if the given bank account number contains something
         else than digits */
-        if (!isInteger(accountNumber)){
+        if (!isLong(accountNumber)){
             System.out.println("Virhe: muita kuin numeroita");
         }
         
@@ -49,7 +50,6 @@ public class FinnishBankAccount {
             toMachineCode("A");
         }
         else if (contains(groupB, Integer.parseInt(accountNumber.substring(0,1)))){
-            System.out.println("ryhmä B");
             toMachineCode("B");
         }
         else{
@@ -113,18 +113,18 @@ public class FinnishBankAccount {
     }
     
     
-    /* Checks if the input string is an integer */
-    private boolean isInteger(String n){
-        boolean validInteger = false;
+    /* Checks if the input string is a long int */
+    private boolean isLong(String n){
+        boolean validLong = false;
         try{
-            Integer.parseInt(n);
+            Long.parseLong(n);
             /* throws NumberFormatException, if n contains something else than digits*/
-            validInteger = true;
+            validLong = true;
         }
         catch (NumberFormatException ex){
         }
         
-        return validInteger;
+        return validLong;
     }
     
     
