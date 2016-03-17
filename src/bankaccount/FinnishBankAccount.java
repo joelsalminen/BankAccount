@@ -13,7 +13,7 @@ public class FinnishBankAccount {
     /* The process of transforming bank account numbers into long format varies
     slightly depending on what the first one or two digits of the bank account
     number are. Arrays group A and groupB contain all the possible combinations
-    for different first digits. */
+    for the different first digits. */
     private final int[] groupA = {1,2,31,33,34,36,37,38,39};
     private final int[] groupB = {4,5,6,8};
     
@@ -180,10 +180,12 @@ public class FinnishBankAccount {
         
         switch (group) {
             case "A":
+                /* Zeroes are added after the sixth digit. */
                 temp1 = accountNumber.substring(0,6);
                 temp2 = accountNumber.substring(6);
                 break;
             case "B":
+                /* Zeroes are added after the seventh digit. */
                 temp1 = accountNumber.substring(0,7);
                 temp2 = accountNumber.substring(7);
                 break;
