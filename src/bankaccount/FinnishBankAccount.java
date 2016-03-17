@@ -6,14 +6,20 @@ joel.salminen@gmail.com
 package bankaccount;
 
 public class FinnishBankAccount {
-    String accountNumber;
-    int[] groupA = {1,2,31,33,34,36,37,38,39};
-    int[] groupB = {4,5,6,8};
+    private String accountNumber;
+    private int[] groupA = {1,2,31,33,34,36,37,38,39};
+    private int[] groupB = {4,5,6,8};
     
     public FinnishBankAccount(String aNumber){
         accountNumber = aNumber;
         checkValidity();
     }
+    
+    public String getAccountNumber(){
+        return accountNumber;
+    }
+    
+    
     private void checkValidity(){
         /* checking if the given bank account number is valid */
         
@@ -36,16 +42,10 @@ public class FinnishBankAccount {
             System.out.println("Virhe: muita kuin numeroita");
         }
         
-        /* Transforming the bank account number into machine code: */
-        /* se että miten tämä tapahtuu rippuu siitä mikä numero on alussa
-        siksi jaetaan ryhmiin a ja b*/
-        
-
-
+        /* Checking if the hash code at the end of the bank account number is correct */
         /* Comparing the first two digits to the values in arrays groupA and groupB*/
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
                 || contains(groupA, Integer.parseInt(accountNumber.substring(0,2)))){
-            System.out.println("ryhmä A");
             toMachineCode("A");
         }
         else if (contains(groupB, Integer.parseInt(accountNumber.substring(0,1)))){
@@ -60,6 +60,7 @@ public class FinnishBankAccount {
             System.out.println("Virhe: hash");
         }
     }
+    
     
     /* Calculates the hash value of the bank account number */
     private int calculateHash(){
@@ -86,6 +87,7 @@ public class FinnishBankAccount {
         roundedUpSum = roundUpwards(sumOfDigits);
         return (roundedUpSum - sumOfDigits);
     }
+    
     
     /* rounds the input integer  up towards the next number that can be divided by 10 */
     private int roundUpwards(int n){
