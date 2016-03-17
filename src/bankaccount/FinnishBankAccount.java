@@ -6,9 +6,9 @@ joel.salminen@gmail.com
 package bankaccount;
 
 public class FinnishBankAccount {
-    private String accountNumber;
-    private String longFormat;
-    private String bankName;
+    private String accountNumber = "";
+    private String longFormat = "";
+    private String bankName = "";
     
     /* The process of transforming bank account numbers into long format varies
     slightly depending on what the first one or two digits of the bank account
@@ -18,22 +18,23 @@ public class FinnishBankAccount {
     private final int[] groupB = {4,5,6,8};
     
     private final int[] bankID = {1,2,31,33,34,36,37,38,39,4,5,6,8};
-    private final String[] bankNames = {"Nordea","SHB","SEB","Danske Bank","Tapiola",
+    private final String[] bankNames = {"Nordea","Nordea","SHB","SEB","Danske Bank","Tapiola",
         "DnB NOR","Swedbank","S-Pankki","Sp/Pop/Aktia","OP/OKO/Okopankki","ÅAB","Sampo"};
     
     /* Constructor, requires a 9-15 digit long bank account number as a parameter*/
     public FinnishBankAccount(String aNumber){
         accountNumber = aNumber;
-        checkValidity();
         
-        for (int i=0;i<bankID.length;i++){
-            if (Integer.parseInt(accountNumber.substring(0, 1)) == bankID[i] || 
-                   Integer.parseInt(accountNumber.substring(0, 2)) == bankID[i] ){
-                bankName = bankNames[i];
+        if (checkValidity()){
+            for (int i=0;i<bankID.length;i++){
+                if (Integer.parseInt(accountNumber.substring(0, 1)) == bankID[i] || 
+                    Integer.parseInt(accountNumber.substring(0, 2)) == bankID[i] ){
+                    
+                    bankName = bankNames[i];
                 break;
+                }
             }
         }
-
     }
     
     
@@ -56,16 +57,18 @@ public class FinnishBankAccount {
     
     
     /* checks if the given bank account number is valid */
-    private void checkValidity(){
+    private boolean checkValidity(){
         
         /* Checking if the input lenght is between 9-15*/
         if (accountNumber.length()<9 || accountNumber.length() > 15){
-            System.out.println("Virhe: pituus");
+            System.out.println("Syötetty tilinumero ei kelpaa.");
+            return false;
         }
         
         /* Checking if the 7th character of the input is a dash */
         if (accountNumber.charAt(6) != '-'){
-            System.out.println("Virhe: väliviiva");
+            System.out.println("Syötetty tilinumero ei kelpaa.");
+            return false;
         }
         
         /* Removing the 7th character, which at this point has to be a dash */
@@ -74,7 +77,8 @@ public class FinnishBankAccount {
         /* Checking if the given bank account number contains something
         other than digits */
         if (!isLong(accountNumber)){
-            System.out.println("Virhe: muita kuin numeroita");
+            System.out.println("Syötetty tilinumero ei kelpaa.");
+            return false;
         }
         
         /* Checking if the hash code at the end of the bank account number is correct */
@@ -90,14 +94,17 @@ public class FinnishBankAccount {
         }
         else{
             /* Illegal first two digits*/
-            System.out.println("virhe: alku");
+            System.out.println("Syötetty tilinumero ei kelpaa.");
+            return false;
         }
 
         /* Checking if the last digit of the bank account number matches the 
         calculated hash value */
         if (calculateHash() != Integer.parseInt(longFormat.substring(13, 14))){
-            System.out.println("Virhe: hash");
+            System.out.println("Syötetty tilinumero ei kelpaa.");
+            return false;
         }
+        return true;
     }
     
     
