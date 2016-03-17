@@ -7,6 +7,7 @@ package bankaccount;
 
 public class FinnishBankAccount {
     private String accountNumber;
+    private String bankName;
     
     /* The process of transforming bank account numbers into machine code varies
     slightly depending on what the first one or two digits of the bank account
@@ -15,12 +16,14 @@ public class FinnishBankAccount {
     private final int[] groupA = {1,2,31,33,34,36,37,38,39};
     private final int[] groupB = {4,5,6,8};
     
+    
     public FinnishBankAccount(String aNumber){
         accountNumber = aNumber;
         checkValidity();
     }
     
     
+    /* Returns the variable accountNumber */
     public String getAccountNumber(){
         return accountNumber;
     }
@@ -44,13 +47,15 @@ public class FinnishBankAccount {
         accountNumber = accountNumber.substring(0,6) + accountNumber.substring(7);
         
         /* Checking if the given bank account number contains something
-        else than digits */
+        other than digits */
         if (!isLong(accountNumber)){
             System.out.println("Virhe: muita kuin numeroita");
         }
         
         /* Checking if the hash code at the end of the bank account number is correct */
-        /* Comparing the first two digits to the values in arrays groupA and groupB*/
+        /* Comparing the first two digits to the values in arrays groupA and groupB.
+        These groups are utilized when transforming the bank account number into 
+        machine code. */
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
                 || contains(groupA, Integer.parseInt(accountNumber.substring(0,2)))){
             machineCode = toMachineCode("A");
@@ -59,9 +64,12 @@ public class FinnishBankAccount {
             machineCode = toMachineCode("B");
         }
         else{
+            /* Illegal first two digits*/
             System.out.println("virhe: alku");
         }
 
+        /* Checking if the last digit of the bank account number matches the 
+        calculated hash value */
         if (calculateHash(machineCode) != Integer.parseInt(machineCode.substring(13, 14))){
             System.out.println("Virhe: hash");
         }
@@ -77,9 +85,6 @@ public class FinnishBankAccount {
 
         String number = machineCode.substring(0, machineCode.length()-1); /* bank account number minus the last digit*/
         charArray = number.toCharArray(); /* splitting the string into an array of characters */
-        for (int i = 0; i<charArray.length; i++){
-            digitArray[i] = Character.getNumericValue(charArray[i]);
-        }
 
         /* Copying the charArray into the digitArray */
         for (int i = 0; i<charArray.length; i++){
@@ -121,7 +126,7 @@ public class FinnishBankAccount {
     }
     
     
-    /* Checks if the input string can be converted into long int */
+    /* Checks if the input string value can be converted into long int */
     private boolean isLong(String n){
         boolean validLong = false;
         try{
