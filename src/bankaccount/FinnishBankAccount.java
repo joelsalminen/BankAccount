@@ -7,6 +7,11 @@ package bankaccount;
 
 public class FinnishBankAccount {
     private String accountNumber;
+    
+    /* The process of transforming bank account numbers into machine code varies
+    slightly depending on what the first one or two digits of the bank account
+    number are. Arrays group A and groupB contain all the possible combinations
+    for different first digits. */
     private final int[] groupA = {1,2,31,33,34,36,37,38,39};
     private final int[] groupB = {4,5,6,8};
     
@@ -21,8 +26,9 @@ public class FinnishBankAccount {
     }
     
     
+    /* checks if the given bank account number is valid */
     private void checkValidity(){
-        /* checking if the given bank account number is valid */
+        String machineCode = "";
         
         /* Checking if the input lenght is between 9-15*/
         if (accountNumber.length()<9 || accountNumber.length() > 15){
@@ -34,8 +40,8 @@ public class FinnishBankAccount {
             System.out.println("Virhe: väliviiva");
         }
         
-        /* Removing dash-character*/
-        removeDash();
+        /* Removing the 7th character, which at this point has to be a dash */
+        accountNumber = accountNumber.substring(0,6) + accountNumber.substring(7);
         
         /* Checking if the given bank account number contains something
         else than digits */
@@ -47,49 +53,51 @@ public class FinnishBankAccount {
         /* Comparing the first two digits to the values in arrays groupA and groupB*/
         if (contains(groupA, Integer.parseInt(accountNumber.substring(0,1))) 
                 || contains(groupA, Integer.parseInt(accountNumber.substring(0,2)))){
-            toMachineCode("A");
+            machineCode = toMachineCode("A");
         }
         else if (contains(groupB, Integer.parseInt(accountNumber.substring(0,1)))){
-            toMachineCode("B");
+            machineCode = toMachineCode("B");
         }
         else{
             System.out.println("virhe: alku");
         }
 
-        if (calculateHash() != Integer.parseInt(accountNumber.substring(13, 14))){
+        if (calculateHash(machineCode) != Integer.parseInt(machineCode.substring(13, 14))){
             System.out.println("Virhe: hash");
         }
     }
     
     
     /* Calculates the hash value of the bank account number */
-    private int calculateHash(){
+    private int calculateHash(String machineCode){
         char [] charArray;
         int [] digitArray = new int [13];
         int sumOfDigits = 0;
         int roundedUpSum;
 
-        String number = accountNumber.substring(0, accountNumber.length()-1); /* bank account number minus the last digit*/
-        charArray = number.toCharArray(); /* splitting the string into an array of characters*/
-        
-        /* kopioidaan kirjaintaulukko int taulukkoon */
+        String number = machineCode.substring(0, machineCode.length()-1); /* bank account number minus the last digit*/
+        charArray = number.toCharArray(); /* splitting the string into an array of characters */
         for (int i = 0; i<charArray.length; i++){
             digitArray[i] = Character.getNumericValue(charArray[i]);
         }
-        
-        /* kerrotaan joka toinen kahdella*/
+
+        /* Copying the charArray into the digitArray */
+        for (int i = 0; i<charArray.length; i++){
+            digitArray[i] = Character.getNumericValue(charArray[i]);
+        }
+
+        /* Every other element is multiplied by two */
         for (int i = 0; i<digitArray.length; i=i+2){
             digitArray[i] = digitArray[i] * 2;
         }
 
-        /* lasketaan jokainen merkki yhteen*/
+        /* Calculating the sum of all individual digits in the array */
         sumOfDigits = calculateSumOfDigits(digitArray);
-        roundedUpSum = roundUpwards(sumOfDigits);
-        return (roundedUpSum - sumOfDigits);
+        return (roundUpwards(sumOfDigits) - sumOfDigits);
     }
     
     
-    /* rounds the input integer  up towards the next number that can be divided by 10 */
+    /* Rounds the input integer  up towards the next number that can be divided by 10 */
     private int roundUpwards(int n){
         if (n % 10 == 0){
             return n;
@@ -99,11 +107,11 @@ public class FinnishBankAccount {
     
     
     /* Calculates the sum of all digits in an array
-    For example [1, 2, 10] equals 1+2+1+0 = 4 */
+    For example [1, 2, 13] would return 1+2+1+3 = 7 */
     private int calculateSumOfDigits(int [] array){
         int sum = 0;
         for (int i = 0; i<array.length; i++){
-            while (array[i] >= 10){
+            while (array[i] >= 10){ /*special case; when the number contains more than one digit*/
                 sum = sum + array[i] % 10;
                 array[i] = array[i] / 10;
             }
@@ -113,23 +121,23 @@ public class FinnishBankAccount {
     }
     
     
-    /* Checks if the input string is a long int */
+    /* Checks if the input string can be converted into long int */
     private boolean isLong(String n){
         boolean validLong = false;
         try{
             Long.parseLong(n);
-            /* throws NumberFormatException, if n contains something else than digits*/
+            /* throws NumberFormatException, if n consists of something else than digits*/
             validLong = true;
         }
         catch (NumberFormatException ex){
         }
-        
         return validLong;
     }
     
     
-    /* Transforms the bank account number into machine code*/
-    private void toMachineCode(String group){
+    /* Transforms the bank account number into machine code by adding 
+    zeroes into coccect places until the length of the string is 14. */
+    private String toMachineCode(String group){
         String temp1 = "";
         String temp2 = "";
         
@@ -146,13 +154,7 @@ public class FinnishBankAccount {
         while (temp1.length()+temp2.length() < 14){
             temp1 = temp1 + "0";
         }
-        accountNumber = temp1 + temp2;
-    }
-    
-    
-    private void removeDash(){
-        /* Removes the 7th letter of the parameter string*/
-        accountNumber = accountNumber.substring(0,6) + accountNumber.substring(7);
+        return temp1 + temp2;
     }
     
     
