@@ -60,7 +60,7 @@ public class FinnishBankAccount {
     /* checks if the given bank account number is valid */
     private boolean checkValidity(){
         
-        /* Checking if the input lenght is between 9-15*/
+        /* Checking if the input length is between 9-15*/
         if (accountNumber.length()<9 || accountNumber.length() > 15){
             System.out.println("Syötetty tilinumero ei kelpaa: väärä pituus.");
             return false;
